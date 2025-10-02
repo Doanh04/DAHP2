@@ -1,0 +1,30 @@
+header{
+    height: 60px;
+    background-color: white;
+    display: flex;
+}
+.header__right{
+    display: flex;
+    align-items: center;
+
+    &--img{
+        margin-left: 30px;
+        height: 60px;
+    }
+    &--btn{
+        margin:0 40px;
+        border: none;
+        font-size: 20px;
+    }
+}
+.layout{
+    height: 90vh;
+
+    &__content{
+        margin: 24px 16px;
+        padding: 24px;
+        height: 95%;
+        background: #fff;
+        overflow: auto;
+    }
+}

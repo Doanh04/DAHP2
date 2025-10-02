@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /dasboard
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/print
+    username: root
+    password: doanh@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

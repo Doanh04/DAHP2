@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    context-path: /dasboard
 
 spring:
   datasource:
@@ -12,5 +10,5 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true

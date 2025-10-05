@@ -3,6 +3,7 @@ package com.Phamducdoanh.Backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,8 @@ public class ProductEntity {
     @Lob
     @Column(name = "image")
     byte[] image;
-    @Column(name = "createdAt")
+    @CreationTimestamp
+    @Column(name = "createdAt", nullable = false, updatable = false)
     Date createdAt;
     @Column(name = "isActive")
     Boolean isActive;

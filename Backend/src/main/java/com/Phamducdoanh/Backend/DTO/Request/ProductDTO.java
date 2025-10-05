@@ -1,0 +1,24 @@
+package com.Phamducdoanh.Backend.DTO.Request;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.Date;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ProductDTO {
+    String productName;
+    String brand;
+    Long quantity;
+    String description;
+    //    Convert sạng byte để lưu ảnh vào DB
+    byte[] image;
+    //Khóa ngoại
+    Long categoryId;
+}

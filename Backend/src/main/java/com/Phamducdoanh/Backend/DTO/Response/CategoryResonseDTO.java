@@ -1,6 +1,5 @@
-package com.Phamducdoanh.Backend.DTO.Request;
+package com.Phamducdoanh.Backend.DTO.Response;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoyCreationDTO {
+public class CategoryResonseDTO {
     Long categoryId;
     String categoryName;
     String description;

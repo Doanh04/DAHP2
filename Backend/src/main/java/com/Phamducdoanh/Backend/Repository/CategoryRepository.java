@@ -1,6 +1,7 @@
 package com.Phamducdoanh.Backend.Repository;
 
 import com.Phamducdoanh.Backend.entity.CategoryEntity;
+import com.Phamducdoanh.Backend.entity.ProductEntity;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

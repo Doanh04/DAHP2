@@ -10,5 +10,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
+
+jwt:
+  siginer-key: "aP+kMERx9Si8IXoraYLGCdVU1TuDMK31AgH4YlSayqW5c4Ly74TUs/5V1spu90Kh"

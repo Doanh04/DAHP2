@@ -4,12 +4,9 @@ import com.Phamducdoanh.Backend.DTO.Request.ProductDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ApiResponse;
 import com.Phamducdoanh.Backend.DTO.Response.ProductResponseDTO;
 import com.Phamducdoanh.Backend.Service.Admin.ProductService;
-import com.Phamducdoanh.Backend.entity.ProductEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,28 +19,59 @@ public class ProductControler {
     final ProductService productService;
 //    Api tạo mới Product
     @PostMapping("/createproduct")
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        ProductResponseDTO productResponseDTO = productService.createProduct(productDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDTO);
+    public ApiResponse<ProductResponseDTO> createProduct(@RequestBody ProductDTO productDTO) {
+        ProductResponseDTO resultDTO = productService.createProduct(productDTO);
+        ApiResponse<ProductResponseDTO> response = ApiResponse.<ProductResponseDTO>builder()
+                .code(1000)
+                .success(true)
+                .result(resultDTO)
+                .message("success")
+                .build();
+        return response;
     }
 
 //    Api get All dữ liệu Product
     @GetMapping("/getproduct")
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
-        List<ProductResponseDTO> productList = productService.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    public ApiResponse<List<ProductResponseDTO>> getAllProducts(){
+        List<ProductResponseDTO> resultDTO = productService.findAll();
+        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .result(resultDTO)
+                .build();
+        return response;
     }
 //    Api Update product
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO){
-        ProductResponseDTO productResponseDTO = productService.updateProduct(productId, productDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(productResponseDTO);
+    public ApiResponse<ProductResponseDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO){
+        ProductResponseDTO resultDTO = productService.updateProduct(productId, productDTO);
+        ApiResponse<ProductResponseDTO> response = ApiResponse.<ProductResponseDTO>builder()
+                .code(1000)
+                .success(true)
+                .result(resultDTO)
+                .message("success")
+                .build();
+        return response;
     };
 
 //    API delete
     @DeleteMapping("{productId}")
-    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId){
+    public String deleteProduct(@PathVariable Long productId){
         productService.deleteProduct(productId);
-        return ResponseEntity.ok(new ApiResponse(true, "Sản phẩm đã được xóa"));
+        return "Sản phẩm đã được xóa";
+    }
+//    API get name
+    @GetMapping("/productbyname")
+    public ApiResponse<List<ProductResponseDTO>> productByName(@RequestParam(name = "productname")
+                                                                      String productName){
+        List<ProductResponseDTO> resultDTO = productService.findByName(productName);
+        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .result(resultDTO)
+                .build();
+        return response;
     }
 }

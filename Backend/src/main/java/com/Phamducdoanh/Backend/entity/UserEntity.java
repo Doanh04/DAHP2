@@ -1,8 +1,10 @@
 package com.Phamducdoanh.Backend.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +22,8 @@ import java.util.List;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String Userid;
+            @Column(name = "userid", insertable = false, updatable = false)
+    String userId;
     @Column(name="username", nullable = false, unique = true)
     String username;
     @Column(name = "name", nullable = false, length = 100)
@@ -33,7 +36,8 @@ public class UserEntity {
     String phone;
     @Column(name = "address")
     String address;
-    @Column(name = "createAt")
+    @CreationTimestamp
+    @Column(name = "createAt", nullable = false, updatable = false)
     Date createdAt;
 
 //    Tạo quan hệ n - 1 với role

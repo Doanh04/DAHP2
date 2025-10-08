@@ -2,6 +2,8 @@ package com.Phamducdoanh.Backend.Service.Admin;
 
 import com.Phamducdoanh.Backend.DTO.Request.ProductDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ProductResponseDTO;
+import com.Phamducdoanh.Backend.Exeption.AppExeption;
+import com.Phamducdoanh.Backend.Exeption.ErrorCode;
 import com.Phamducdoanh.Backend.Maper.ProductMaper;
 import com.Phamducdoanh.Backend.Repository.ProductRepository;
 import com.Phamducdoanh.Backend.entity.ProductEntity;
@@ -29,6 +31,7 @@ public class ProductService {
 //    Hàm update Product
     public ProductResponseDTO updateProduct(Long productId, ProductDTO productDTO){
         ProductEntity productEntity = productRepository.findByProductId(productId);
+        productMaper.updateProduct(productEntity, productDTO);
         ProductEntity saveUpdate = productRepository.save(productEntity);
         return productMaper.toProductDTO(saveUpdate);
     }
@@ -42,8 +45,13 @@ public class ProductService {
         return productMaper.toProductDTOList(productList);
     }
 //    Hàm get name product
-    public List<ProductEntity> findByName(String productName){
-        return productRepository.findByProductName(productName);
+    public List<ProductResponseDTO> findByName(String productName){
+        List<ProductEntity> productListName = productRepository.findByProductNameContainingIgnoreCase(productName);
+        if(productListName.isEmpty())
+            throw new AppExeption(ErrorCode.PRODUCTNAME_NOTFOUND);
+
+        return productMaper.toProductDTOList(productListName);
     }
+
 
 }

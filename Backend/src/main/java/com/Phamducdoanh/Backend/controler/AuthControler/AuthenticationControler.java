@@ -2,9 +2,11 @@ package com.Phamducdoanh.Backend.controler.AuthControler;
 
 import com.Phamducdoanh.Backend.DTO.Request.AuthenticationRequestDTO;
 import com.Phamducdoanh.Backend.DTO.Request.IntroSpectRequestDTO;
+import com.Phamducdoanh.Backend.DTO.Request.UserDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ApiResponse;
 import com.Phamducdoanh.Backend.DTO.Response.AuthenticationResponseDTO;
 import com.Phamducdoanh.Backend.DTO.Response.IntroSpectResponseDTO;
+import com.Phamducdoanh.Backend.DTO.Response.UserResponse;
 import com.Phamducdoanh.Backend.Service.Auth.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -32,6 +34,18 @@ public class AuthenticationControler {
                 .success(true)
                 .result(result)
                 .build();
+    }
+//    API đăng ký tài khoản
+    @PostMapping("/createuser")
+    public ApiResponse<UserResponse> creatUser(@RequestBody UserDTO userDTO){
+        UserResponse resultUser = authenticationService.createUser(userDTO);
+        ApiResponse<UserResponse> response = ApiResponse.<UserResponse>builder()
+                .code(1000)
+                .success(true)
+                .message("User Created")
+                .result(resultUser)
+                .build();
+        return response;
     }
 //API verifi token
     @PostMapping("/introspect")

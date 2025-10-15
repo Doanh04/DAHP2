@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = {PermisionMaper.class, RoleMappingHelper.class})
 public interface UserMaper {
 //    MAP Request sang entity thực hiện create và update dữ liệu
     UserEntity toUserDTO(UserDTO userDTO);
@@ -20,7 +20,6 @@ public interface UserMaper {
     @Mapping(target = "userId", ignore = true)     // Bỏ qua ID
     @Mapping(target = "username", ignore = true)   // Bỏ qua Username
     @Mapping(target = "createdAt", ignore = true)  // Bỏ qua ngày tạo
-    @Mapping(target = "role", ignore = true)       // Bỏ qua vai trò
     @Mapping(target = "cart", ignore = true)       // Bỏ qua quan hệ (nếu có)
     @Mapping(target = "orders", ignore = true)      // Bỏ qua quan hệ
     @Mapping(target = "password", ignore = true)

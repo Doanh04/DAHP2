@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,5 +59,20 @@ public class ProductUserControler {
                 .build();
         return response;
     }
+
+    //api filter product
+    @GetMapping("/filterproduct")
+        public ApiResponse<List<ProductResponseDTO>> filterProduct(@RequestParam(name = "categoryId", required = false) Long categoryId,
+                                                                   @RequestParam(name = "productname", required = false) String productName,
+                                                                   @RequestParam(name = "minPrice", required = false) Integer minPrice,
+                                                                   @RequestParam(name = "maxPrice", required = false) Integer maxPrice){
+        List<ProductResponseDTO> result = productUserService.findProduct(categoryId, productName, minPrice, maxPrice);
+        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .result(result)
+                .build();
+        return response;
+        }
 }
-//Còn thiếu tìm theo giá, id danh mục, id sản phẩm

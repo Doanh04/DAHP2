@@ -6,8 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 //Bảng User
 @Getter
@@ -18,11 +17,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "user")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-            @Column(name = "userid", insertable = false, updatable = false)
+    @EqualsAndHashCode.Include
+            @Column(name = "userid", updatable = false)
     String userId;
     @Column(name="username", nullable = false, unique = true)
     String username;
@@ -40,11 +41,15 @@ public class UserEntity {
     @Column(name = "createAt", nullable = false, updatable = false)
     Date createdAt;
 
-//    Tạo quan hệ n - 1 với role
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roleId", nullable = false)
-//    Biến tham chiếu tới maped ở bảng roles
-     RolesEntity role;
+//    Tạo quan hệ n - n với role
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
+    Set<RolesEntity> roles = new HashSet<>();
+
 
 //    Tạo quan hệ 1-1 với cart
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

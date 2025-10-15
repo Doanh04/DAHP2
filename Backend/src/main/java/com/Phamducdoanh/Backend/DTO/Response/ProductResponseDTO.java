@@ -17,9 +17,10 @@ public class ProductResponseDTO {
     Long quantity;
     String description;
     //    Convert sạng byte để lưu ảnh vào DB
-    byte[] image;
+    String imageUrl;
     Date createdAt;
     Boolean isActive;
+    Integer price;
     //Khóa ngoại
     private Long categoryId;
     private String categoryName;

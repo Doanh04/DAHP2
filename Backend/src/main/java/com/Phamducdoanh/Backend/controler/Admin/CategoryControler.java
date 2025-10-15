@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class CategoryControler {
     final CategoryService categoryService;
     final CategoryMaper categoryMaper;
 //API tạo mới một category
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
     @PostMapping("/createcategory")
     ApiResponse<CategoryResonseDTO> createCategory(@RequestBody CategoyCreationDTO category) {
         ApiResponse<CategoryResonseDTO> response = new ApiResponse<>();
@@ -32,6 +34,7 @@ public class CategoryControler {
         return response;
     }
 //    API get all dữ liệu của category
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
     @GetMapping("/getcategory")
     ApiResponse<List<CategoryResonseDTO>> getCategory() {
         ApiResponse<List<CategoryResonseDTO>> response = new ApiResponse<>();
@@ -40,6 +43,7 @@ public class CategoryControler {
         return response;
     }
 //    API update thông category
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
     @PutMapping("/{cateoryId}")
     ApiResponse<CategoryResonseDTO> updateCategory(@PathVariable Long cateoryId, @RequestBody CategoyCreationDTO categoryDTO) {
         ApiResponse<CategoryResonseDTO> response = new ApiResponse<>();
@@ -48,7 +52,8 @@ public class CategoryControler {
         return response;
     }
 //    API xóa category
-    @DeleteMapping("{cateoryId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
+    @DeleteMapping("/{cateoryId}")
     String delleteCategory(@PathVariable Long cateoryId) {
        categoryService.deleteCategory(cateoryId);
        return "Category deleted successfully";

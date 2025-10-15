@@ -17,6 +17,8 @@ public class ProductDTO {
     String brand;
     Long quantity;
     String description;
+    Integer price;
+    Boolean isActive;
     //    Convert sạng byte để lưu ảnh vào DB
     byte[] image;
     //Khóa ngoại

@@ -29,6 +29,8 @@ public class ProductEntity {
     Long quantity;
     @Column(name="description")
     String description;
+    @Column(name="price")
+    Integer price;
 //    Convert sạng byte để lưu ảnh vào DB
     @Lob
     @Column(name = "image")

@@ -15,6 +15,8 @@ public enum ErrorCode {
     USER_NOTFOUND(404,"Không tìm thấy tài khoản phù hợp", "error" , HttpStatus.NOT_FOUND),
     USER_NOT_EXISTED(404, "User không tồn tại", "error" , HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", "unauthoried" , HttpStatus.UNAUTHORIZED),
+    NOT_ROLES(1007,"Không đủ quyền truy cập", "error" , HttpStatus.FORBIDDEN),
+    NOT_FIND_ROLE(1008,"Không tìm thấy role", "error" , HttpStatus.FORBIDDEN),
     ;
 
     private final int code;

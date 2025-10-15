@@ -21,17 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserControler {
     final AccoutUserService accoutUserService;
 
-    @PostMapping("/createuser")
-    public ApiResponse<UserResponse> creatUser(@RequestBody UserDTO userDTO){
-        UserResponse resultUser = accoutUserService.createUser(userDTO);
-        ApiResponse<UserResponse> response = ApiResponse.<UserResponse>builder()
-                .code(1000)
-                .success(true)
-                .message("User Created")
-                .result(resultUser)
-                .build();
-        return response;
-    }
     @PutMapping("/updateuser/{iduser}")
     public ApiResponse<UserResponse> updateUser(@PathVariable String iduser, @RequestBody UserDTO userDTO){
         ApiResponse<UserResponse> response = new ApiResponse<>();

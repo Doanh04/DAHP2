@@ -30,6 +30,7 @@ public interface ProductMaper {
     @Mapping(target = "productId", source = "productId")
     @Mapping(target = "categoryId", source = "category.categoryId")
     @Mapping(target = "categoryName", source = "category.categoryName")
+    @Mapping(target = "imageUrl", expression = "java(\"/api/images/\" + productEntity.getProductId())")
     ProductResponseDTO toProductDTO(ProductEntity productEntity);
 
 //    Map từ etity sanng DTO để get dữ liệu

@@ -24,7 +24,7 @@ public class CartEntity {
 
 //    Tạo mối quan hệ 1 1 tới user
     @OneToOne
-    @JoinColumn(name = "Userid", referencedColumnName = "Userid")
+    @JoinColumn(name = "Userid", referencedColumnName = "Userid", unique = true)
     private UserEntity user;
 
 //    Tạo mối quan hệ 1 - n tới bảng cart item

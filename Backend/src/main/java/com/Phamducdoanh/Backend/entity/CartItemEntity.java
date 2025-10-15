@@ -18,6 +18,8 @@ public class CartItemEntity {
     Long cartItemId;
     @Column(name = "quantity", nullable = false)
     Long quantity;
+    @Column(name = "unit_price", nullable = false)
+    Double unitPrice;
 //    QH của n - 1 CartItem và Cart
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartId", nullable = false)

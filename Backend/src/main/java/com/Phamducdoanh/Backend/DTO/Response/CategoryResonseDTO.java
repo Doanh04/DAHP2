@@ -3,6 +3,8 @@ package com.Phamducdoanh.Backend.DTO.Response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -13,4 +15,5 @@ public class CategoryResonseDTO {
     Long categoryId;
     String categoryName;
     String description;
+    List<ProductResponseDTO> products;
 }

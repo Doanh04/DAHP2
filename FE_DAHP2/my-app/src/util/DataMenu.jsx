@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { Children } from 'react';
 
+//Link điều hướng admin menu
 export const items = [
   {
     label: <Link to="/admin">Trang chủ</Link>,
@@ -23,7 +24,7 @@ export const items = [
     icon:<DashboardOutlined />,
     children:[
       {
-        label:<Link to="/admin/dashboard/users">Quản lý người dùng</Link>,
+        label:<Link to="/admin/users">Quản lý người dùng</Link>,
         key: "users",
         icon:<UserOutlined />
       },
@@ -56,4 +57,6 @@ export const items = [
       },      
     ]
   }
+  // Link điều hướng đăng nhập đăng xuất
+  
 ];

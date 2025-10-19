@@ -17,6 +17,9 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", "unauthoried" , HttpStatus.UNAUTHORIZED),
     NOT_ROLES(1007,"Không đủ quyền truy cập", "error" , HttpStatus.FORBIDDEN),
     NOT_FIND_ROLE(1008,"Không tìm thấy role", "error" , HttpStatus.FORBIDDEN),
+    INVALID_QUANTITY(1009, "Số lượng không hợp lệ", "error",HttpStatus.BAD_REQUEST),
+    CART_ITEM_NOTFOUND(1010, "Không tìm thấy sản phẩm trong giỏ hàng", "error", HttpStatus.NOT_FOUND),
+    ACCESS_DENIED(1011, "Truy cập bị từ chối", "error", HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;

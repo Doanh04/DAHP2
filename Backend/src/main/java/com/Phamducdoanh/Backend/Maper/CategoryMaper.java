@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProductMaper.class})
 public interface CategoryMaper {
 //    Hàm Map từ DTO sang entity cho tạo mới
     CategoryEntity toCategoryCreation(CategoyCreationDTO categoryCreationDTO);
@@ -19,6 +19,7 @@ public interface CategoryMaper {
 
 //    Map đơn lẻ cho categoryId tránh lỗi null
     @Mapping(source = "categoryId", target = "categoryId")
+    @Mapping(target = "products", source = "products")
     CategoryResonseDTO toCategoryResonseDTO(CategoryEntity categoryEntity);
 //    Hàm Map từ entity sang DTO cho việc trả ra client
     List<CategoryResonseDTO> toCategoryResponseDTO(List<CategoryEntity> categoryEntity);

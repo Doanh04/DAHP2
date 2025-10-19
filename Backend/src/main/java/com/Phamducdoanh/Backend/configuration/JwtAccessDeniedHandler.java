@@ -1,5 +1,6 @@
 package com.Phamducdoanh.Backend.configuration;
 
+import com.Phamducdoanh.Backend.DTO.Response.ApiResponse;
 import com.Phamducdoanh.Backend.DTO.Response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -23,6 +24,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
                 .message("không đủ quyền")
                 .status("error")
                 .build();
+
 
         ObjectMapper mapper = new ObjectMapper();
         response.getWriter().write(mapper.writeValueAsString(errorResponse));

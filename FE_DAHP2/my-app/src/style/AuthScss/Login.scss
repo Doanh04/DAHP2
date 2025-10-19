@@ -1,0 +1,62 @@
+
+.loginContainer {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #fff;
+    max-height: 100vh;
+    
+
+    &__banner {
+        flex: 1; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        background-color: #f0f2f5; 
+        border-right: 1px solid #eee; 
+
+        img {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+
+        }
+    }
+    &__loginForm {
+        &--title{
+            font-size: 20px;
+            margin-bottom: 50px;
+            & strong{
+                color: #D70018;
+            }
+        }
+        &--username,
+        &--password {
+            margin-bottom: 20px;
+            height: 40px;
+            width: 400px;
+
+        }
+        &--button{
+            margin-top: 20px;
+            margin-right: 110px;
+           & button{
+                width: 300px;
+                height: 40px;
+                background-color: #D70018;
+                border-color: #D70018;
+                &:hover, &:focus{
+                    background-color: #a80012 !important; 
+                }
+            }
+        }
+    }
+}
+.ant-form{
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}

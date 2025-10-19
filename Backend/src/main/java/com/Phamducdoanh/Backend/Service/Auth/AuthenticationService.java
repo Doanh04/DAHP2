@@ -70,6 +70,8 @@ public class AuthenticationService {
 
         return AuthenticationResponseDTO.builder()
                 .token(token)
+                .username(user.getUsername())
+                .fullName(user.getName())
                 .authenticated(true)
                 .build();
     }
@@ -85,7 +87,7 @@ public class AuthenticationService {
                 .issuer("Phamducdoanh.com")// Xác định token được issuer từ ai
                 .issueTime(new Date())//xác định thời gian tạo issue
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()// hết hạn sau 1 giờ
+                        Instant.now().plus(30, ChronoUnit.DAYS).toEpochMilli()// hết hạn sau 30 ngày
                 ))//xác định thời hạn token
                 .claim("scope", buildScope(userEntity))//thêm các claim khác
                 .claim("userId", userEntity.getUserId())

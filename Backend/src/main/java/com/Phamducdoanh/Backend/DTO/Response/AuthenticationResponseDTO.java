@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationResponseDTO {
+    String username;
+    String fullName;
     String token;
 //    DTO trả ra kết quả username và password là true hoặc failse
     boolean authenticated;

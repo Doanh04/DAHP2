@@ -46,10 +46,12 @@ public class CategoryControler {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
     @PutMapping("/{cateoryId}")
     ApiResponse<CategoryResonseDTO> updateCategory(@PathVariable Long cateoryId, @RequestBody CategoyCreationDTO categoryDTO) {
-        ApiResponse<CategoryResonseDTO> response = new ApiResponse<>();
-        response.setResult(categoryService.updateCategory(cateoryId, categoryDTO));
-        response.setSuccess(true);
-        return response;
+        CategoryResonseDTO response = categoryService.updateCategory(cateoryId, categoryDTO);
+        return ApiResponse.<CategoryResonseDTO>builder()
+                .code(1000)
+                .result(response)
+                .success(true)
+                .build();
     }
 //    API xóa category
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")

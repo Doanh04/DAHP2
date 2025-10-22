@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoyCreationDTO {
-    Long categoryId;
+//    Long categoryId;
     String categoryName;
     String description;
 }

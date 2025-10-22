@@ -24,9 +24,11 @@ const GetAllCategory = async()=>{
 // Add danh mục sản phẩm
 const AddCategory = async(values)=>{
     try{
-        const response =await HttpClient.post(`${CATEGORY_BASE_URL}/createcategory`)
+        const response =await HttpClient.post(`${CATEGORY_BASE_URL}/createcategory`,{
+            categoryName:values.categoryName,
+            description:values.description,
+        })
         const data = response.data
-
         if(data.code === 1000){
             const result = data.result
             return result;
@@ -34,10 +36,32 @@ const AddCategory = async(values)=>{
         else{
              throw new Error("Không tải được danh sách danh mục")
         }
+        
     }
+    
     catch(error){
         throw error.response? error.response.data.code : 500;
     }
 }
+//  Sửa danh mục sản phẩm
+const PutCategory = async (values) =>{
+    try{
+        const response = await HttpClient.post(`${CATEGORY_BASE_URL}/cateoryId`,{
+            categoryName:values.categoryName,
+            description:values.description,
+        })
+        const data = response.data;
 
-export {GetAllCategory, AddCategory}
+        if(data.code === 1000){
+            const result = data.result;
+            return result;
+        }
+        else{
+            throw new Error("Không thể cập nhật danh mục");
+        }
+    }
+    catch(error){
+        throw new Error(error.response?error.response.data.error:"Server không thể phản hồi");
+    }
+}
+export {GetAllCategory, AddCategory, PutCategory}

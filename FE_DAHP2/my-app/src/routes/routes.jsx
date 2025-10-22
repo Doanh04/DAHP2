@@ -4,12 +4,13 @@ import AdminLayout from "../Layouts/adminLayout";
 import Home from "../pages/admin/Home";
 import OrderStatus from "../pages/admin/OrderStatus";
 import User from "../pages/admin/User";
-import ProductGroup from "../pages/admin/ProductGroup";
+import ProductGroup from "../pages/admin/Category";
 import Product from "../pages/admin/Product";
 import OrderList from "../pages/admin/OrderList";
 import Login from "../pages/Auth/Login";
 import Signin from "../pages/Auth/Signin";
 import AdminRoute from "../components/Authenticate/Authenticate";
+import Category from "../pages/admin/Category";
 
 export const Routers = [
   // Link điều hướng admin
@@ -29,8 +30,8 @@ export const Routers = [
             element: <User />,
           },
           {
-            path: "productgroup",
-            element: <ProductGroup />,
+            path: "category",
+            element: <Category />,
           },
           {
             path: "products",

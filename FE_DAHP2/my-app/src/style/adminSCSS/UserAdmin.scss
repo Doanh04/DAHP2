@@ -37,6 +37,7 @@ $action-icon-color: #333;
       }
 
       td {
+        width: 300px;
         padding: 12px 16px;
         text-align: center;
         border-bottom: 1px solid $border-color;
@@ -55,7 +56,7 @@ $action-icon-color: #333;
 
           // Icon thao tác
           .anticon {
-            margin: 0 8px;
+            // margin: 0 10px;
             cursor: pointer;
             font-size: 18px;
             color: $action-icon-color;
@@ -84,5 +85,48 @@ $action-icon-color: #333;
 .anticon {
   svg {
     font-size: 20px;
+  }
+}
+
+.modalPutAccout{
+  width: 700px !important;
+  .ant-btn{
+    width: 60px;
+  }
+}
+.editForm{
+
+  &__input{
+    width: 100%;
+  }
+}
+.ant-btn{
+  padding:5px;
+  margin:0 5px;
+}
+
+.spiner {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 200px; 
+  
+  &:before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1890ff; 
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 public class UserResponse {
     String userId;
     String username;
+    String password;
     String name;
     String email;
     String phone;

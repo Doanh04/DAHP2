@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +62,12 @@ public class AccoutAdminService {
         List<UserEntity> getAll = userRepository.findAll();
         List<UserResponse> SavedGetAll = userMaper.toUserResponseList(getAll);
         return SavedGetAll;
+    }
+//    Get Accout by user name
+    public UserResponse findByUserName(String userName) {
+        Optional<UserEntity> getUserName = userRepository.findByUsername(userName);
+        UserResponse userResponse = userMaper.toUserResponse(getUserName.get());
+        return userResponse;
     }
 //delete accout
     public void deleteAccout(String UserId) {

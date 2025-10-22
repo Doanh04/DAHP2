@@ -29,7 +29,7 @@ export const items = [
         icon:<UserOutlined />
       },
       {
-        label:<Link to="/admin/dashboard/productgroup">Quản lý nhóm sản phẩm</Link>,
+        label:<Link to="/admin/category">Quản lý nhóm sản phẩm</Link>,
         key: "productsgroup",
         icon:<ShoppingCartOutlined />
       },

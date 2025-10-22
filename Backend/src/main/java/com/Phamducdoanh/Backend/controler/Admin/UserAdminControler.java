@@ -55,7 +55,20 @@ public class UserAdminControler {
         accoutAdminService.deleteAccout(iduser);
         return ApiResponse.<Void>builder()
                 .code(200)
+                .success(true)
                 .message("delete Success")
                 .build();
+    }
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @GetMapping("findByUserName/{userName}")
+    ApiResponse<UserResponse> getUserByName(@PathVariable String userName){
+        UserResponse response = accoutAdminService.findByUserName(userName);
+        ApiResponse<UserResponse> result = ApiResponse.<UserResponse>builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .result(response)
+                .build();
+        return result;
     }
 }

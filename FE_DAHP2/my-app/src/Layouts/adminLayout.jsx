@@ -13,42 +13,44 @@ import { Navigate } from "react-router-dom";
 function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [userData, setUserData] = useState(null);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   const handleClick = () => {
     setCollapsed(!collapsed);
   };
-  useEffect(() =>{
+  useEffect(() => {
     async function fetchUserDataFromStorage() {
+      const nameStorage = localStorage.getItem("name");
 
-        const nameStorage = localStorage.getItem('name'); 
-
-        if (nameStorage) {
-            try {
-
-                const parsedName = JSON.parse(nameStorage); 
-                setUserData(parsedName); 
-
-
-            } catch (error) {
-                console.warn("Dữ liệu 'name' không phải JSON, sử dụng giá trị thô.", error);
-                setUserData(nameStorage);
-            }
-        } else {
-             console.log("Không tìm thấy key 'name' trong Local Storage.");
-             setUserData(null);
+      if (nameStorage) {
+        try {
+          const parsedName = JSON.parse(nameStorage);
+          setUserData(parsedName);
+        } catch (error) {
+          console.warn(
+            "Dữ liệu 'name' không phải JSON, sử dụng giá trị thô.",
+            error
+          );
+          setUserData(nameStorage);
         }
+      } else {
+        console.log("Không tìm thấy key 'name' trong Local Storage.");
+        setUserData(null);
+      }
     }
-    
-    fetchUserDataFromStorage(); 
-  },[])
 
-  const handleLogout = ()=>{
-    localStorage.removeItem('name');
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
+    fetchUserDataFromStorage();
+  }, []);
 
-    navigate('/auth/token'); 
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("name");
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+
+    navigate("/auth/token");
+  };
+  const handleHome = () => {
+    navigate("/");
+  };
 
   return (
     <>
@@ -57,14 +59,22 @@ function AdminLayout() {
           <div className="header__right">
             <Link to="/admin">
               <img
-                className={collapsed ? "header__right--imgfold colapse" : "header__right--img colapse"}
+                className={
+                  collapsed
+                    ? "header__right--imgfold colapse"
+                    : "header__right--img colapse"
+                }
                 src={collapsed ? logofold : Logo}
                 alt="Logo"
               />
             </Link>
             <Button
               onClick={handleClick}
-              className={collapsed ? "header__right--btnfold colapse" : "header__right--btn colapse"}
+              className={
+                collapsed
+                  ? "header__right--btnfold colapse"
+                  : "header__right--btn colapse"
+              }
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             />
           </div>
@@ -73,8 +83,11 @@ function AdminLayout() {
               <strong>Xin chào:</strong> {userData}
             </div>
             <div>
-              <Button type="primary" onClick={handleLogout}>
-                  Đăng xuất
+              <Button type="primary" onClick={handleHome}  className="exit">
+                Trở về
+              </Button>
+              <Button type="primary" onClick={handleLogout}  className="logout">
+                Đăng xuất
               </Button>
             </div>
           </div>

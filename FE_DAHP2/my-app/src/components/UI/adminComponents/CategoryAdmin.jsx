@@ -1,4 +1,4 @@
-import { Button, Modal, Form, Input } from "antd";
+import { Button, Modal, Form, Input, Table } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import { AddCategory } from "../../../service/admin/Category";
+import { AddCategory, DeleteCategory } from "../../../service/admin/Category";
 
 function CategoryAdmin({
   listCategory,
@@ -17,37 +17,129 @@ function CategoryAdmin({
   showModal,
   handleCancel,
   handleOk,
-  onFinish,
-  selectedCategory
+  // onFinish,
+  selectedCategory, //null là thêm
+  handleAddCategory,
+  hanlePutCategory,
+  excuteDeleteCategory,
 }) {
   const [form] = Form.useForm();
 
-  // const onFinish = async (values) => {
-  //   const result = await Swal.fire({
-  //     title: "Xác nhận thêm danh mục",
-  //     text: "Bạn có muốn lưu các thay đổi",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Lưu",
-  //     denyButtonText: `Không lưu`,
-  //     icon: "question",
-  //   });
+  // chạy khi sellected thay đổi
+  useEffect(() => {
+    // chế độ sửa form.setFieldValue cho dữ liệu cũ vào input
+    if (selectedCategory) {
+      form.setFieldsValue(selectedCategory);
+    } else {
+      form.resetFields();
+    }
+  }, [selectedCategory, form]);
 
-  //   if (result.isConfirmed) {
-  //     const apiResult = await AddCategory(values);
+  const colums = [
+    { title: "ID", dataIndex: "categoryId", key: "categoryId", width: 80 },
+    {
+      title: "Tên danh mục",
+      dataIndex: "categoryName",
+      key: "categoryName",
+      width: 200,
+    },
+    { title: "Mô tả", dataIndex: "description", key: "description", width: 200 },
+    {
+      title: "Chức năng",
+      key: "action",
+      width: 150,
+      render: (record) => (
+        <>
+          <Button onClick={() => showModal(record)}>
+            <EditOutlined style={{ color: "#dbdb38ff" }} />
+          </Button>
+          <Button>
+            <DeleteOutlined
+              onClick={() => {
+                handleDeleteCategory(record.categoryId);
+              }}
+              style={{ color: "#cd2b2bff" }}
+            />
+          </Button>
+        </>
+      ),
+    },
+  ];
 
-  //     if (apiResult) {
-  //       Swal.fire("Đã lưu!", apiResult.message, "success");
-  //       handleOk();
-  //       handleReload();
-  //       form.resetFields();
-  //     } else {
-  //       Swal.fire("Lỗi!", apiResult.message, "error");
-  //     }
-  //   } else if (result.isDenied) {
-  //     Swal.fire("Đã Hủy", "Các thay đổi không được lưu.", "info");
-  //     handleOk();
-  //   }
-  // };
+  const onFinish = async (values) => {
+    const isEditing = !!values.categoryId; // tạo biến dạng bool
+    const apiCall = isEditing ? hanlePutCategory : handleAddCategory;
+    const title = isEditing
+      ? "Xác nhận cập nhật danh mục"
+      : "Xác nhận thêm danh mục";
+
+    const result = await Swal.fire({
+      title: title,
+      text: "Bạn có muốn lưu thay đổi",
+      showCancelButton: true,
+      confirmButtonText: "Lưu",
+      denyButtonText: `Không lưu`,
+      icon: "question",
+    });
+    if (result.isConfirmed) {
+      try {
+        const apiResult = await apiCall(values);
+
+        if (apiResult.success) {
+          Swal.fire("Đã lưu", apiResult.message, "success");
+          handleOk();
+          handleReload();
+          form.resetFields();
+        } else {
+          0 - 0;
+          Swal.fire("Lỗi !", apiResult.message, "error");
+        }
+      } catch (error) {
+        Swal.fire("Lỗi!", "Đã xảy ra lỗi không xác định.", "error");
+      }
+    } else if (result.isDenied || result.dismiss) {
+      // Xử lý khi chọn Không lưu, Hủy hoặc đóng Swal
+      Swal.fire("Đã Hủy", "Các thay đổi không được lưu.", "info");
+      handleOk();
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    const result = await Swal.fire({
+      title: "Xác nhận xóa danh mục?",
+      text: "Bạn có muốn xóa danh mục này không?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Xóa",
+    });
+    if (result.isConfirmed) {
+      try {
+        const ApiResult = await excuteDeleteCategory(categoryId);
+
+        if (ApiResult.success) {
+          Swal.fire("Đã xóa!", ApiResult.message, "success");
+
+          handleReload();
+        } else {
+          Swal.fire(
+            "Lỗi!",
+            ApiResult.message || "Không xóa được danh mục",
+            "error"
+          );
+        }
+      } catch (error) {
+        Swal.fire(
+          "Lỗi!",
+          error.message || "Lỗi không xác định từ server.",
+          "error"
+        );
+      }
+    }
+  };
+
+  const modalTitle = selectedCategory ? "Chính sửa Danh mục" : "Thêm danh mục";
 
   const handleModalOK = () => {
     form.submit();
@@ -57,50 +149,23 @@ function CategoryAdmin({
       <div className="p-4">
         <div className="header">
           <h2 className="header__textTitle">Quản lý Danh mục</h2>
-        <Button className="addCategory" type="primary" onClick={() => showModal()}>
-          Thêm danh mục
-        </Button>
+          <Button
+            className="addCategory"
+            type="primary"
+            onClick={() => showModal()}
+          >
+            Thêm danh mục
+          </Button>
         </div>
-        <table className="category__table">
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Tên danh mục</td>
-              <td>Mô tả</td>
-              <td>Chức năng</td>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              listCategory.map((item) => (
-                <tr key={item.categoryId}>
-                  <td>{item.categoryId}</td>
-                  <td>{item.categoryName}</td>
-                  <td>{item.description}</td>
-                  <td>
-                    <Button>
-                      <EditOutlined style={{ color: "#dbdb38ff" }} />
-                    </Button>
-                    <Button>
-                      <DeleteOutlined style={{ color: "cd2b2bff" }} />
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="4"
-                  style={{ textAlign: "center", padding: "16px" }}
-                >
-                  <div className="spiner"></div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <Table
+          columns={colums}
+          dataSource={listCategory}
+          rowKey="categoryId"
+          loading={loading}
+          scroll={{ x: 'max-content' }}
+        />
         <Modal
-          title="Thêm danh mục sản phẩm"
+          title={modalTitle}
           closable={{ "aria-label": "Custom Close Button" }}
           open={isModalOpen}
           onOk={handleModalOK}
@@ -108,9 +173,7 @@ function CategoryAdmin({
           className="modalAddCategory"
         >
           <Form
-            form={form} 
-            title="Thêm danh mục sản phẩm"
-            closable={{ "aria-label": "Custom Close Button" }}
+            form={form}
             name="addCategory"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
@@ -118,6 +181,9 @@ function CategoryAdmin({
             autoComplete="off"
             className="addForm"
           >
+            <Form.Item name="categoryId" hidden>
+                            <Input type="hidden" /> 
+            </Form.Item>
             <Form.Item
               label="Tên danh mục"
               className="addForm__input"

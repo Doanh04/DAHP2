@@ -5,6 +5,7 @@ import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Base64;
 import java.util.Date;
 
 @Getter
@@ -20,7 +21,7 @@ public class ProductDTO {
     Integer price;
     Boolean isActive;
     //    Convert sạng byte để lưu ảnh vào DB
-    byte[] image;
+    String image;
     //Khóa ngoại
     Long categoryId;
 }

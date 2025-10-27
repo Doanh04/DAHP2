@@ -3,10 +3,12 @@ import CategoryAdmin from "../../components/UI/adminComponents/CategoryAdmin";
 import "../../style/adminSCSS/Category.scss";
 import {
   AddCategory,
+  DeleteCategory,
   GetAllCategory,
   PutCategory,
 } from "../../service/admin/Category";
 import Swal from "sweetalert2";
+import { message } from "antd";
 
 function Category() {
   const [listCategory, setListCategory] = useState([]);
@@ -18,6 +20,7 @@ function Category() {
 
   useEffect(() => {
     const getCategory = async () => {
+      setLoading(true)
       try {
         const data = await GetAllCategory();
         setListCategory(data);
@@ -25,12 +28,15 @@ function Category() {
       } catch (error) {
         setError("Lỗi không tải được dữ liệu, liên hệ với dev");
       }
+      finally {
+      setLoading(false); // Tải xong
+    }
     };
     getCategory();
   }, [refresh]);
 
   const showModal = (category = null) => {
-    setSelectedCategory(category);//Set dữ liệu ở chế độ put
+    setSelectedCategory(category); //Set dữ liệu ở chế độ put
     setIsModalOpen(true);
   };
   const handleCancel = () => {
@@ -46,52 +52,48 @@ function Category() {
     setRefresh((prev) => !prev);
   };
 
-  const handleAddCategory = async (values) => {
-    const result = await Swal.fire({
-          title: "Xác nhận thêm danh mục",
-          text: "Bạn có muốn lưu các thay đổi",
-          showCancelButton: true,
-          confirmButtonText: "Lưu",
-          denyButtonText: `Không lưu`,
-          icon: "question",
-        });
-    
-        if (result.isConfirmed) {
-          const apiResult = await AddCategory(values);
-    
-          if (apiResult) {
-            Swal.fire("Đã lưu!", apiResult.message, "success");
-            handleOk();
-            handleReload();
-            form.resetFields();
-          } else {
-            Swal.fire("Lỗi!", apiResult.message, "error");
-          }
-        } else if (result.isDenied) {
-          Swal.fire("Đã Hủy", "Các thay đổi không được lưu.", "info");
-          handleOk();
-        }
-  };
-  const hanlePutCategory = async (values) => {
+  const executeAddCategory = async (values) => {
     const payload = {
-      categoryName: values.categoryName,
-      description: values.description,
-      
-    };
+      categoryName: values.categoryName,
+      description: values.description,
+    };
+    try {
+      await AddCategory(payload);
 
-    try {
-      await PutCategory(payload);
+      return { success: true, message: "Thêm danh mục thành công!" }; 
+    } catch (error) {
+      const errorMessage = error.message || "Lỗi không thể thêm danh mục.";
 
-      handleOk();
-      handleReload();
-
-      return { success: true, message: "Cập nhật danh mục thành công!" };
-    } catch (error) {
-      const errorMessage = error.message || "Lỗi không thể cập nhật danh mục.";
-
-      return { success: false, message: errorMessage };
-    }
+      return { success: false, message: errorMessage };
+    }
   };
+
+  const executePutCategory = async (values) => {
+   const payload = {
+      categoryId: values.categoryId, // Đảm bảo ID được truyền từ Form
+      categoryName: values.categoryName,
+      description: values.description,
+    };
+    try {
+      await PutCategory(payload);
+      return { success: true, message: "Cập nhật danh mục thành công!" }; 
+    } catch (error) {
+      const errorMessage = error.message || "Lỗi không thể cập nhật danh mục.";
+
+      return { success: false, message: errorMessage }; 
+    }
+  };
+  
+const excuteDeleteCategory = async (categoryId) => {
+    try {
+        await DeleteCategory(categoryId); 
+        return { success: true, message: "Xóa danh mục thành công!" };
+    } catch (error) {
+        const errorMessage = error.message || "Lỗi không thể xóa danh mục.";
+        return { success: false, message: errorMessage };
+    }
+}
+
   const formProp = {
     listCategory,
     loading,
@@ -102,8 +104,9 @@ function Category() {
     showModal,
     handleCancel,
     handleOk,
-    onFinish:handleAddCategory,
-    hanlePutCategory
+    handleAddCategory: executeAddCategory,
+    hanlePutCategory:executePutCategory,
+    excuteDeleteCategory,
   };
   return (
     <>

@@ -29,7 +29,7 @@ public class ProductEntity {
     Long quantity;
     @Column(name="description")
     String description;
-    @Column(name="price")
+    @Column(name="price", columnDefinition = "LONGBLOB")
     Integer price;
 //    Convert sạng byte để lưu ảnh vào DB
     @Lob

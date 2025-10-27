@@ -34,7 +34,7 @@ export const items = [
         icon:<ShoppingCartOutlined />
       },
       {
-        label:<Link to="/admin/dashboard/products">Quản lý sản phẩm</Link>,
+        label:<Link to="/admin/products">Quản lý sản phẩm</Link>,
         key: "products",
         icon:<UnorderedListOutlined />
       }

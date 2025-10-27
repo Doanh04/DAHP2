@@ -7,6 +7,8 @@ import com.Phamducdoanh.Backend.Service.Admin.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +37,13 @@ public class ProductControler {
 //    Api get All dữ liệu Product
     @GetMapping("/getproduct")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
-    public ApiResponse<List<ProductResponseDTO>> getAllProducts(){
-        List<ProductResponseDTO> resultDTO = productService.findAll();
-        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+    public ApiResponse<Page<ProductResponseDTO>> getAllProducts(Pageable pageable){
+        Page<ProductResponseDTO> resultPage= productService.findAll(pageable);
+        ApiResponse<Page<ProductResponseDTO>> response = ApiResponse.<Page<ProductResponseDTO>>builder()
                 .code(1000)
                 .success(true)
                 .message("success")
-                .result(resultDTO)
+                .result(resultPage)
                 .build();
         return response;
     }
@@ -62,9 +64,13 @@ public class ProductControler {
 //    API delete
     @DeleteMapping("{productId}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
-    public String deleteProduct(@PathVariable Long productId){
+    public ApiResponse deleteProduct(@PathVariable Long productId){
         productService.deleteProduct(productId);
-        return "Sản phẩm đã được xóa";
+        return ApiResponse.builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .build();
     }
 //    API get name
     @GetMapping("/productbyname")

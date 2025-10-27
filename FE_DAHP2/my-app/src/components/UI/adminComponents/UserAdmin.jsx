@@ -98,7 +98,7 @@ function UserAdmin({
 
   return (
     <>
-      <div className="textTitle">Quản lý tài khoản</div>
+      <div className="textTitle"><h1>Quản lý tài khoản</h1></div>
       <div
         style={{
           display: "flex",

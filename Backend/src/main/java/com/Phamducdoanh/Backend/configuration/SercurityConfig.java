@@ -37,7 +37,7 @@ public class SercurityConfig {
     final String[] PUBLIC_ENPOINTS_PRODUCTS = {"/dashboard/product/productall",
             "/dashboard/product/categoryid-product/{categoryId}","/dashboard/product/getname"
             ,"/dashboard/product/filterproduct"};
-
+    final String[] PUBLIC_ENDPOINTS_IMAGE = {"/product/images/{productId}"};
     @Value("${jwt.siginer-key}")
     String siginerKey;
 
@@ -50,6 +50,7 @@ public class SercurityConfig {
                 .authorizeHttpRequests(requests ->
                 requests.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_JWT).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_ENPOINTS_PRODUCTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_IMAGE).permitAll()
                         .anyRequest().authenticated());//local enpoin;
 
         // nhận token lấy quyền theo role

@@ -56,8 +56,12 @@ public class CategoryControler {
 //    API xóa category
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
     @DeleteMapping("/{cateoryId}")
-    String delleteCategory(@PathVariable Long cateoryId) {
+    public ApiResponse delleteCategory(@PathVariable Long cateoryId) {
        categoryService.deleteCategory(cateoryId);
-       return "Category deleted successfully";
+       return ApiResponse.builder()
+               .code(1000)
+               .success(true)
+               .result(true)
+               .build();
     }
 }

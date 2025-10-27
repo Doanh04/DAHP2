@@ -31,4 +31,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice
     );
+
+    // Lấy 10 sản phẩm đầu tiên
+    List<ProductEntity> findTop10ByCategory_CategoryIdOrderByProductIdDesc(Long categoryId);
 }

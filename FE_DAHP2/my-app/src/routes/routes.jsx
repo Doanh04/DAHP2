@@ -11,6 +11,9 @@ import Login from "../pages/Auth/Login";
 import Signin from "../pages/Auth/Signin";
 import AdminRoute from "../components/Authenticate/Authenticate";
 import Category from "../pages/admin/Category";
+import HomeUser from "../components/userComponents/HomeUser";
+import HomeUserManager from "../pages/user/HomeUser";
+import ProductByCategory from "../components/userComponents/ProductByCategory";
 
 export const Routers = [
   // Link điều hướng admin
@@ -63,6 +66,13 @@ export const Routers = [
   {
     path: "/",
     element: <UserLayout />,
-    children: [],
+    children: [{
+      index:true,
+      element:<HomeUserManager/> 
+    },
+      {
+      path: "products/category/:categoryId",
+      element: <ProductByCategory />
+    },],
   },
 ];

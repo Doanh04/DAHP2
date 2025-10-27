@@ -1,11 +1,16 @@
 .Header {
+   position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: block !important;
   background: linear-gradient(#ec5f6d, #eb041b);
   color: white;
   padding: 0 50px;
   height: auto !important;
   line-height: normal !important;
-
+  
   &__row {
     padding: 8px 0;
 

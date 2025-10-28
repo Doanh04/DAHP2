@@ -11,6 +11,7 @@ import org.mapstruct.Named;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring", uses = {CategoryResolve.class})
 public interface ProductMaper {
@@ -79,4 +80,6 @@ public interface ProductMaper {
 
 //    Map từ etity sanng DTO để get dữ liệu
     List<ProductResponseDTO> toProductDTOList(List<ProductEntity> productEntityList);
+//    Map request sang  Réponse
+//    ProductResponseDTO toProductResponse(Optional<ProductEntity> productDTO);
 }

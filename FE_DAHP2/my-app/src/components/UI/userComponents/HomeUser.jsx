@@ -1,6 +1,6 @@
 import { Button, Card, Carousel, Col, Row, Pagination } from "antd"; // Import Pagination
 import { Link } from "react-router-dom";
-import { banners } from "../Banner/Banner";
+import { banners } from "../../Banner/Banner";
 import { useEffect, useState } from "react";
 import { GiftOutlined } from "@ant-design/icons";
 
@@ -172,13 +172,7 @@ function HomeUser({ listCategory, top10Product, product, handlePageChange }) {
     );
   };
     
-    // ========================================================
-    // LOGIC PHÂN TRANG: Cần được định nghĩa bên trong HomeUser
-    // ========================================================
-
-    // Lấy danh sách sản phẩm để hiển thị (chỉ lấy content)
     const getProductsToDisplay = () => {
-        // KIỂM TRA AN TOÀN TUYỆT ĐỐI
         if (!product?.content || !Array.isArray(product.content)) return [];
         return product.content; // Trả về toàn bộ content của trang hiện tại
     };

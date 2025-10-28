@@ -11,9 +11,11 @@ import Login from "../pages/Auth/Login";
 import Signin from "../pages/Auth/Signin";
 import AdminRoute from "../components/Authenticate/Authenticate";
 import Category from "../pages/admin/Category";
-import HomeUser from "../components/userComponents/HomeUser";
+import HomeUser from "../components/UI/userComponents/HomeUser";
 import HomeUserManager from "../pages/user/HomeUser";
-import ProductByCategory from "../components/userComponents/ProductByCategory";
+import ProductByCategory from "../components/UI/userComponents/ProductByCategory";
+import ProdductDetail from "../components/UI/userComponents/ProductDetail";
+import ProductDetailManager from "../pages/user/ProductDetail";
 
 export const Routers = [
   // Link điều hướng admin
@@ -22,7 +24,7 @@ export const Routers = [
     element: <AdminRoute />,
     children: [
       {
-        element:<AdminLayout/>,
+        element: <AdminLayout />,
         children: [
           {
             index: true,
@@ -66,13 +68,19 @@ export const Routers = [
   {
     path: "/",
     element: <UserLayout />,
-    children: [{
-      index:true,
-      element:<HomeUserManager/> 
-    },
+    children: [
       {
-      path: "products/category/:categoryId",
-      element: <ProductByCategory />
-    },],
+        index: true,
+        element: <HomeUserManager />,
+      },
+      {
+        path: "products/category/:categoryId",
+        element: <ProductByCategory />,
+      },
+      {
+        path:"products/:productId",
+        element:<ProductDetailManager/>
+      }
+    ],
   },
 ];

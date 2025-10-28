@@ -51,4 +51,9 @@ public class ProductUserService {
             throw new AppExeption(ErrorCode.PRODUCTNAME_NOTFOUND);
         return productMaper.toProductDTOList(listProduct);
     }
+//    Tìm theo id
+    public ProductResponseDTO findById(Long productId){
+        ProductEntity product = productRepository.findByProductId(productId);
+        return productMaper.toProductDTO(product);
+    }
 }

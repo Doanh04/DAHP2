@@ -79,5 +79,16 @@ public class ProductUserControler {
                 .result(result)
                 .build();
         return response;
-        }
+    }
+    @GetMapping("{productId}")
+    public ApiResponse<ProductResponseDTO> getProductById(@PathVariable Long productId){
+        ProductResponseDTO result = productUserService.findById(productId);
+        ApiResponse<ProductResponseDTO> response = ApiResponse.<ProductResponseDTO>builder()
+                .code(1000)
+                .success(true)
+                .message("success")
+                .result(result)
+                .build();
+        return response;
+    };
 }

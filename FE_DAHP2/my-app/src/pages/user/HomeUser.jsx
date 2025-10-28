@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HomeUser from "../../components/userComponents/HomeUser";
+import HomeUser from "../../components/UI/userComponents/HomeUser";
 import { GetAllCategory, GetTop10 } from "../../service/user/Category";
 import "../../style/UserScss/HomeUser.scss";
 import { GetAllProduct } from "../../service/user/product"; 

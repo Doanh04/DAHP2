@@ -1,63 +1,108 @@
-import { Button, Card, Carousel, Col, Row } from "antd";
+import { Button, Card, Carousel, Col, Row, Pagination } from "antd"; // Import Pagination
 import { Link } from "react-router-dom";
 import { banners } from "../Banner/Banner";
 import { useEffect, useState } from "react";
 import { GiftOutlined } from "@ant-design/icons";
 
-// Hàm trợ giúp định dạng tiền tệ (Định nghĩa ngoài component)
+// Hàm trợ giúp định dạng tiền tệ
 const formatCurrency = (price) => {
-    return price?.toLocaleString('vi-VN') + 'đ';
+    return price?.toLocaleString('vi-VN') + 'đ';
 };
 
-// Component con ProductCard (Định nghĩa ngoài component)
+// Component con ProductCard
 const ProductCard = ({ product }) => {
-    const API_BASE_URL = "http://localhost:8080"; 
-
-    return (
-        <div className="product-carousel-item" style={{ textAlign: 'center', padding: '10px 5px' }}>
-            <Link to={`/products/${product.productId}`}>
-                <Card
-                    hoverable
-                    cover={
-                        <img 
-                            alt={product.productName} 
-                            src={`${API_BASE_URL}${product.imageUrl}`} 
-                            style={{ height: 160, objectFit: 'contain' }}
-                        />
-                    }
-                    bodyStyle={{ padding: '10px' }}
-                >
-                    <Card.Meta 
-                        title={<span style={{ fontSize: '13px', whiteSpace: 'normal' }}>{product.productName}</span>} 
-                        description={<strong style={{ color: '#cf1322' }}>{formatCurrency(product.price)}</strong>}
-                    />
-                </Card>
-            </Link>
-        </div>
-    );
+    const API_BASE_URL = "http://localhost:8080"; 
+    return (
+        <div className="product-carousel-item" style={{ textAlign: 'center', padding: '10px 5px' }}>
+            <Link to={`/products/${product.productId}`}>
+                <Card
+                    hoverable
+                    cover={
+                        <img 
+                            alt={product.productName} 
+                            src={`${API_BASE_URL}${product.imageUrl}`} 
+                            style={{ height: 160, objectFit: 'contain' }}
+                        />
+                    }
+                    bodyStyle={{ padding: '10px' }}
+                >
+                    <Card.Meta 
+                        title={<span style={{ fontSize: '13px', whiteSpace: 'normal' }}>{product.productName}</span>} 
+                        description={<strong style={{ color: '#cf1322' }}>{formatCurrency(product.price)}</strong>}
+                    />
+                </Card>
+            </Link>
+        </div>
+    );
 };
 
-// Định nghĩa setting Carousel (Định nghĩa ngoài component)
+// Component ProductItem cho danh sách sản phẩm
+const ProductItem = ({ product }) => {
+    const API_BASE_URL = "http://localhost:8080";
+    return (
+        <Col xs={12} sm={12} md={8} lg={6} xl={4} className="product-grid-item">
+            <Link to={`/products/${product.productId}`}>
+                <Card
+                    hoverable
+                    cover={
+                        <img 
+                            alt={product.productName} 
+                            src={`${API_BASE_URL}${product.imageUrl}`} 
+                            style={{ height: 200, objectFit: 'contain', padding: '10px' }}
+                        />
+                    }
+                    bodyStyle={{ padding: '12px' }}
+                >
+                    <Card.Meta 
+                        title={
+                            <div style={{ 
+                                fontSize: '14px', 
+                                whiteSpace: 'normal',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                minHeight: '40px'
+                            }}>
+                                {product.productName}
+                            </div>
+                        } 
+                        description={
+                            <div>
+                                <div style={{ color: '#cf1322', fontSize: '16px', fontWeight: 'bold', marginBottom: '5px' }}>
+                                    {formatCurrency(product.price)}
+                                </div>
+                                <div style={{ fontSize: '12px', color: '#888' }}>
+                                    {product.brand} | {product.categoryName}
+                                </div>
+                            </div>
+                        }
+                    />
+                </Card>
+            </Link>
+        </Col>
+    );
+};
+
+// Setting Carousel
 const carouselSettings = {
-    autoplay: true,
-    autoplaySpeed: 3500,
-    arrows: true,
-    draggable: true,
-    dots: false,
-    responsive: [
-        { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 4 } },
-        { breakpoint: 992, settings: { slidesToShow: 3, slidesToScroll: 3 } },
-        { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 2 } },
-        { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-        { breakpoint: 2000, settings: { slidesToShow: 5, slidesToScroll: 5 } }
-    ]
+    autoplay: true,
+    autoplaySpeed: 3500,
+    arrows: true,
+    draggable: true,
+    dots: false,
+    responsive: [
+        { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 4 } },
+        { breakpoint: 992, settings: { slidesToShow: 3, slidesToScroll: 3 } },
+        { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+        { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+        { breakpoint: 2000, settings: { slidesToShow: 5, slidesToScroll: 5 } }
+    ]
 };
 
-
-function HomeUser({ listCategory, top10Product }) {
+function HomeUser({ listCategory, top10Product, product, handlePageChange }) {
   const [userData, setUserData] = useState(null);
-  
-  
 
   useEffect(() => {
     async function fetchUserDataFromStorage() {
@@ -68,10 +113,7 @@ function HomeUser({ listCategory, top10Product }) {
           const parsedName = JSON.parse(nameStorage);
           setUserData(parsedName);
         } catch (error) {
-          console.warn(
-            "Dữ liệu 'name' không phải JSON, sử dụng giá trị thô.",
-            error
-          );
+          console.warn("Dữ liệu 'name' không phải JSON, sử dụng giá trị thô.", error);
           setUserData(nameStorage);
         }
       } else {
@@ -85,9 +127,7 @@ function HomeUser({ listCategory, top10Product }) {
 
 
   const renderUserStatus = () => {
-    // ... (logic renderUserStatus giữ nguyên)
     if (userData) {
-      // Đã đăng nhập
       return (
         <Card title="Tài khoản của bạn" size="small">
           <p>Xin chào, <br /> <strong>{userData.replace(/"/g, '')}</strong></p>
@@ -97,7 +137,6 @@ function HomeUser({ listCategory, top10Product }) {
         </Card>
       );
     }
-    // Chưa đăng nhập
     return (
       <Card title="Chào mừng!" size="small">
         <p>Vui lòng đăng nhập để nhận ưu đãi.</p>
@@ -111,9 +150,7 @@ function HomeUser({ listCategory, top10Product }) {
     );
   };
 
-  // Hàm Render Nội dung Cột 2 (Ưu đãi)
   const renderPromotions = () => {
-    // ... (logic renderPromotions giữ nguyên)
     return (
       <Card 
         title={<><GiftOutlined /> Ưu đãi Giáo dục</>} 
@@ -134,6 +171,17 @@ function HomeUser({ listCategory, top10Product }) {
       </Card>
     );
   };
+    
+    // ========================================================
+    // LOGIC PHÂN TRANG: Cần được định nghĩa bên trong HomeUser
+    // ========================================================
+
+    // Lấy danh sách sản phẩm để hiển thị (chỉ lấy content)
+    const getProductsToDisplay = () => {
+        // KIỂM TRA AN TOÀN TUYỆT ĐỐI
+        if (!product?.content || !Array.isArray(product.content)) return [];
+        return product.content; // Trả về toàn bộ content của trang hiện tại
+    };
 
   return (
     <>
@@ -185,44 +233,82 @@ function HomeUser({ listCategory, top10Product }) {
           </Col>
         </Row>
       </div>
-      <div className="Contend" style={{ padding: '20px 50px' }}>
-                <div className="product-highlight-header">
-                    <div className="ribbon-container">
-                        {/* Phần Nhãn dán đỏ nổi bật */}
-                        <div className="ribbon-label">
-                            Danh sách các sản phẩm nổi bật
-                        </div>
-                        {/* Phần nền dài phía sau (Màu hồng nhạt) */}
-                        <div className="ribbon-base"></div>
-                    </div>
+
+    <div className="Contend" style={{ padding: '20px 50px' }}>
+         <div className="product-highlight-header">
+            <div className="ribbon-container">
+                <div className="ribbon-label">
+                   Danh sách các sản phẩm mới
                 </div>
-                
-                {Array.isArray(top10Product) ? (
-                    top10Product.map((category) => (
-                        category.topProducts && category.topProducts.length > 0 && (
-                            <Card
-                                key={category.categoryId}
-                                title={
-                                    <Link to={`/products/category/${category.categoryId}`} style={{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }}>
-                                        {category.categoryName} ({category.topProducts.length} sản phẩm)
-                                    </Link>
-                                }
-                                bordered={false}
-                                style={{ marginBottom: 30, borderTop: '2px solid #1890ff' }}
-                            >
-                                <Carousel {...carouselSettings}>
-                                    {category.topProducts.map((product) => (
-                                        <ProductCard key={product.productId} product={product} />
-                                    ))}
-                                </Carousel>
-                            </Card>
-                        )
-                    ))
-                ) : (
-                    // Hiển thị loading hoặc thông báo nếu dữ liệu chưa sẵn sàng
-                    <div>Đang tải sản phẩm nổi bật...</div>
-                )}
+                <div className="ribbon-base"></div>
             </div>
+        </div>
+        
+        {Array.isArray(top10Product) ? (
+            top10Product.map((category) => (
+                category.topProducts && category.topProducts.length > 0 && (
+                    <Card
+                        key={category.categoryId}
+                        title={
+                            <Link to={`/products/category/${category.categoryId}`} className="product-link">
+                                {category.categoryName} ({category.topProducts.length} sản phẩm)
+                            </Link>
+                        }
+                        bordered={false}
+                        className="product-top"
+                    >
+                        <Carousel {...carouselSettings}>
+                            {category.topProducts.map((product) => (
+                                <ProductCard key={product.productId} product={product} />
+                            ))}
+                        </Carousel>
+                    </Card>
+                )
+            ))
+        ) : (
+            <div>Đang tải sản phẩm nổi bật...</div>
+        )}
+      </div>
+
+      <div className="product" style={{ padding: '20px 50px' }}>
+         <div className="product-highlight-header">
+            <div className="ribbon-container">
+                <div className="ribbon-label">
+                   Danh sách sản phẩm
+                </div>
+                <div className="ribbon-base"></div>
+            </div>
+        </div>
+        
+        <div className="product__item" style={{ marginTop: '20px' }}>
+          {/* SỬA: Kiểm tra hàm và lấy dữ liệu */}
+          {getProductsToDisplay().length > 0 ? ( 
+            <>
+              <Row gutter={[16, 16]}>
+                {getProductsToDisplay().map((item) => (
+                  <ProductItem key={item.productId} product={item} />
+                ))}
+              </Row>
+              
+              <div className="Pagination" >
+                <Pagination
+                  showSizeChanger
+                  current={product.number + 1} 
+                  pageSize={product.size}
+                  total={product.totalElements}
+                  onChange={handlePageChange} 
+                  onShowSizeChange={handlePageChange}
+                />
+              </div>
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              Đang tải danh sách sản phẩm...
+            </div>
+          )}
+        </div>
+        
+      </div>
     </>
   );
 }

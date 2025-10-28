@@ -2,11 +2,14 @@ package com.Phamducdoanh.Backend.controler.User;
 
 import com.Phamducdoanh.Backend.DTO.Response.ApiResponse;
 import com.Phamducdoanh.Backend.DTO.Response.ProductResponseDTO;
+import com.Phamducdoanh.Backend.Service.Admin.ProductService;
 import com.Phamducdoanh.Backend.Service.User.ProductUserService;
 import com.Phamducdoanh.Backend.entity.ProductEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +25,17 @@ import java.util.Objects;
 @RequestMapping("/dashboard/product")
 public class ProductUserControler {
     final ProductUserService productUserService;
-//    API get all product
+    private final ProductService productService;
+
+    //    API get all product
     @GetMapping("/productall")
-    public ApiResponse<List<ProductResponseDTO>> findAllProducts(){
-        List<ProductResponseDTO> result = productUserService.findAll();
-        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+    public ApiResponse<Page<ProductResponseDTO>> getAllProducts(Pageable pageable){
+        Page<ProductResponseDTO> resultPage= productService.findAll(pageable);
+        ApiResponse<Page<ProductResponseDTO>> response = ApiResponse.<Page<ProductResponseDTO>>builder()
                 .code(1000)
                 .success(true)
                 .message("success")
-                .result(result)
+                .result(resultPage)
                 .build();
         return response;
     }

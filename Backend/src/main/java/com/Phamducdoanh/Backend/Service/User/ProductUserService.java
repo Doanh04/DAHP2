@@ -11,6 +11,8 @@ import com.Phamducdoanh.Backend.entity.ProductEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +25,9 @@ public class ProductUserService {
     final ProductMaper productMaper;
 
     //    Hàm get all
-    public List<ProductResponseDTO> findAll(){
-        List<ProductEntity> listProduct = productRepository.findAll();
-        return productMaper.toProductDTOList(listProduct);
+    public Page<ProductResponseDTO> findAll(Pageable pageable){
+        Page<ProductEntity> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMaper::toProductDTO);
     }
 //    Hàm tìm kiếm theo tên
     public List<ProductResponseDTO> findByName(String productName){

@@ -1,3 +1,6 @@
+$red-dark: #cc3333;
+$red-light: #f75d5d;
+$pink-base: #f7a9a9;
 .Top {
   max-width: 80%;
   margin: 130px auto;
@@ -405,11 +408,11 @@
   right: -25px;
 }
 
-$red-dark: #cc3333;
-$red-light: #f75d5d;
-$pink-base: #f7a9a9;
-
-.product-highlight-header {
+.Contend{
+    max-width: 80%;
+    margin: 0 auto;
+}
+.product-highlight-header {  
   margin: 30px 0 20px 0;
   position: relative;
   height: 60px; /* Chiều cao tổng thể */
@@ -482,4 +485,32 @@ $pink-base: #f7a9a9;
     transform: skewX(-45deg); 
     transform-origin: top left;
   }
+}
+.ant-card-head{
+    margin-bottom: 30px;
+    border-top: 2px solid #f11616;
+}
+.product-link{
+    color: #f31c31;
+    font-size: 20px;
+    font-weight: bold;
+}
+.product-top{
+    margin: 50px 0;
+}
+.product{
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.Pagination{
+    display: flex;
+    justify-content: center; 
+    margin-top: 30px;
+    .ant-select-selector{
+        display: none;
+    }
+    .ant-select-arrow{
+        display: none;
+    }
 }

@@ -91,6 +91,8 @@ public class AuthenticationService {
                 ))//xác định thời hạn token
                 .claim("scope", buildScope(userEntity))//thêm các claim khác
                 .claim("userId", userEntity.getUserId())
+                .claim("name", userEntity.getName())
+                .claim("username", userEntity.getUsername())
                 .build();
     // tạo payload
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

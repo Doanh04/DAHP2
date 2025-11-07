@@ -36,7 +36,7 @@ public class SercurityConfig {
                 ,};
     final String[] PUBLIC_ENPOINTS_PRODUCTS = {"/dashboard/product/productall",
             "/dashboard/product/categoryid-product/{categoryId}","/dashboard/product/getname"
-            ,"/dashboard/product/filterproduct", "/dashboard/product/{productId}"};
+            ,"/dashboard/product/filterproduct", "/dashboard/product/{productId}", "/dashboard/product/filterProduct"};
     final String[] PUBLIC_ENDPOINTS_IMAGE = {"/product/images/{productId}"};
     final String[] PUBLIC_ENDPOINTS_CATEGORY = {"/dasboard/category/getcategory", "/dasboard/category/top-products"};
     @Value("${jwt.siginer-key}")

@@ -1,6 +1,7 @@
 package com.Phamducdoanh.Backend.Service.Admin;
 
 import com.Phamducdoanh.Backend.DTO.Request.ProductDTO;
+import com.Phamducdoanh.Backend.DTO.Response.PageResponseDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ProductResponseDTO;
 import com.Phamducdoanh.Backend.Exeption.AppExeption;
 import com.Phamducdoanh.Backend.Exeption.ErrorCode;
@@ -10,6 +11,7 @@ import com.Phamducdoanh.Backend.entity.ProductEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 
@@ -47,13 +49,22 @@ public class ProductService {
         return productPage.map(productMaper::toProductDTO);
     }
 //    Hàm get name product
-    public List<ProductResponseDTO> findByName(String productName){
-        List<ProductEntity> productListName = productRepository.findByProductNameContainingIgnoreCase(productName);
-        if(productListName.isEmpty())
-            throw new AppExeption(ErrorCode.PRODUCTNAME_NOTFOUND);
+public PageResponseDTO<ProductResponseDTO> findByName(String productName, int page, int size){
+    Pageable pageable = PageRequest.of(page, size);
+    Page<ProductEntity> listName = productRepository.findByProductNameContainingIgnoreCase(productName, pageable);
+    if(listName.isEmpty())
+        throw new AppExeption(ErrorCode.PRODUCTNAME_NOTFOUND);
 
-        return productMaper.toProductDTOList(productListName);
-    }
+    List<ProductResponseDTO> contendDTO = productMaper.toProductDTOList(listName.getContent());
+
+    return PageResponseDTO.<ProductResponseDTO>builder()
+            .content(contendDTO)
+            .pageNumber(listName.getNumber())
+            .pageSize(listName.getSize())
+            .totalElements(listName.getTotalElements())
+            .totalPages(listName.getTotalPages())
+            .build();
+}
 
 
 }

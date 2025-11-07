@@ -16,6 +16,10 @@ import HomeUserManager from "../pages/user/HomeUser";
 import ProductByCategory from "../components/UI/userComponents/ProductByCategory";
 import ProdductDetail from "../components/UI/userComponents/ProductDetail";
 import ProductDetailManager from "../pages/user/ProductDetail";
+import ProductByCategoryManager from "../pages/user/ProductByCategory";
+import ProductSearchItem from "../components/UI/userComponents/ProductSearchItem";
+import ProductSearchItemManager from "../pages/user/ProductSearch";
+import CartManager from "../pages/Cart/Cart";
 
 export const Routers = [
   // Link điều hướng admin
@@ -75,11 +79,19 @@ export const Routers = [
       },
       {
         path: "products/category/:categoryId",
-        element: <ProductByCategory />,
+        element: <ProductByCategoryManager/>,
       },
       {
         path:"products/:productId",
         element:<ProductDetailManager/>
+      },
+      {
+        path: "products/filterProduct",
+        element: <ProductSearchItemManager/>,
+      },
+      {
+        path: "cart",
+        element: <CartManager/>
       }
     ],
   },

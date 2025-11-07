@@ -1,14 +1,62 @@
-import { Button, Card, Col, InputNumber, Row, Tag, Divider, Skeleton } from "antd";
+import { Button, Card, Col, InputNumber, Row, Tag, Divider, Skeleton, Carousel, notification } from "antd";
 import { ShoppingCartOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { AddToCart } from "../../../service/Cart/Cart";
+// import { formatCurrency } from "./HomeUser";
 // import "./ProductDetail.scss";
+
+// Component con ProductCard
+const ProductCard = ({ product }) => {
+    const API_BASE_URL = "http://localhost:8080"; 
+    return (
+        <div className="product-carousel-item" style={{ textAlign: 'center', padding: '10px 5px' }}>
+            <Link to={`/products/${product.productId}`}>
+                <Card
+                    hoverable
+                    cover={
+                        <img 
+                            alt={product.productName} 
+                            src={`${API_BASE_URL}${product.imageUrl}`} 
+                            style={{ height: 160, objectFit: 'contain' }}
+                        />
+                    }
+                    bodyStyle={{ padding: '10px' }}
+                >
+                    <Card.Meta 
+                        title={<span style={{ fontSize: '13px', whiteSpace: 'normal' }}>{product.productName}</span>} 
+                        description={<strong style={{ color: '#cf1322' }}>{formatCurrency(product.price)}</strong>}
+                    />
+                </Card>
+            </Link>
+        </div>
+    );
+};
 
 const formatCurrency = (price) => {
   return price?.toLocaleString('vi-VN') + 'đ';
 };
 
-function ProductDetail({ product, loading, error }) {
+// Setting Carousel
+const carouselSettings = {
+    autoplay: true,
+    autoplaySpeed: 3500,
+    arrows: true,
+    draggable: true,
+    dots: false,
+    responsive: [
+        { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 4 } },
+        { breakpoint: 992, settings: { slidesToShow: 3, slidesToScroll: 3 } },
+        { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+        { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+        { breakpoint: 2000, settings: { slidesToShow: 5, slidesToScroll: 5 } }
+    ]
+};
+
+
+function ProductDetail({ product, loading, error, top10Product }) {
   const [quantity, setQuantity] = useState(1);
+  const [api, contextHolder] = notification.useNotification();
   const API_BASE_URL = "http://localhost:8080";
 
   // Xử lý thay đổi số lượng
@@ -18,12 +66,37 @@ function ProductDetail({ product, loading, error }) {
     }
   };
 
+  // Xử lý notifycation
+  const openNotification =(type, title, description)=>{
+    api[type]({
+      message:title,
+      description:description,
+      placement:"topRight"
+    })
+  }
+
   // Xử lý thêm vào giỏ hàng
-  const handleAddToCart = () => {
-    console.log("Thêm vào giỏ hàng:", {
-      productId: product.productId,
-      quantity: quantity
-    });
+  const handleAddToCart = async () => {
+    try{
+      await AddToCart(product.productId, quantity);
+      setTimeout(() => {
+        openNotification(
+        "success",
+        "Thành công",
+        `Đã thêm ${quantity} sản phẩm vào giỏ hàng.`
+      )
+      }, 0)
+    }
+    catch(error){
+      const errorMessage = error.message || "Lỗi không thể thêm vào giỏ hàng.";
+      setTimeout(() => {
+        openNotification(
+        "error",
+        "Thất bại",
+        errorMessage
+      )
+      }, 0);
+    }
   };
 
   if (loading) {
@@ -54,6 +127,7 @@ function ProductDetail({ product, loading, error }) {
 
   return (
     <div className="ProductDetail">
+      {contextHolder}
       <Row gutter={[40, 40]}>
         {/* Cột Ảnh Sản Phẩm */}
         <Col xs={24} md={10}>
@@ -218,6 +292,41 @@ function ProductDetail({ product, loading, error }) {
           </Card>
         </Col>
       </Row>
+      <div className="Contend2" style={{ padding: '20px 50px' }}>
+         <div className="product-highlight-header">
+            <div className="ribbon-container">
+                <div className="ribbon-label">
+                   Danh sách các sản phẩm mới
+                </div>
+                <div className="ribbon-base"></div>
+            </div>
+        </div>
+        
+        {Array.isArray(top10Product) ? (
+            top10Product.map((category) => (
+                category.topProducts && category.topProducts.length > 0 && (
+                    <Card
+                        key={category.categoryId}
+                        title={
+                            <Link to={`/products/category/${category.categoryId}`} className="product-link">
+                                {category.categoryName} ({category.topProducts.length} sản phẩm)
+                            </Link>
+                        }
+                        bordered={false}
+                        className="product-top"
+                    >
+                        <Carousel {...carouselSettings}>
+                            {category.topProducts.map((product) => (
+                                <ProductCard key={product.productId} product={product} />
+                            ))}
+                        </Carousel>
+                    </Card>
+                )
+            ))
+        ) : (
+            <div>Đang tải sản phẩm nổi bật...</div>
+        )}
+      </div>
     </div>
   );
 }

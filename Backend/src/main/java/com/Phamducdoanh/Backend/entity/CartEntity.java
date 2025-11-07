@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,5 +30,5 @@ public class CartEntity {
 
 //    Tạo mối quan hệ 1 - n tới bảng cart item
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<CartItemEntity> cartItemEntityList;
+    List<CartItemEntity> cartItemEntityList = new ArrayList<>();
 }

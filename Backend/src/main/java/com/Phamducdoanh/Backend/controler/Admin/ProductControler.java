@@ -2,6 +2,7 @@ package com.Phamducdoanh.Backend.controler.Admin;
 
 import com.Phamducdoanh.Backend.DTO.Request.ProductDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ApiResponse;
+import com.Phamducdoanh.Backend.DTO.Response.PageResponseDTO;
 import com.Phamducdoanh.Backend.DTO.Response.ProductResponseDTO;
 import com.Phamducdoanh.Backend.Service.Admin.ProductService;
 import lombok.AccessLevel;
@@ -75,10 +76,12 @@ public class ProductControler {
 //    API get name
     @GetMapping("/productbyname")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGERMENT')")
-    public ApiResponse<List<ProductResponseDTO>> productByName(@RequestParam(name = "productname")
-                                                                      String productName){
-        List<ProductResponseDTO> resultDTO = productService.findByName(productName);
-        ApiResponse<List<ProductResponseDTO>> response = ApiResponse.<List<ProductResponseDTO>>builder()
+    public ApiResponse<PageResponseDTO<ProductResponseDTO>> findByName(@RequestParam(name = "productname")
+                                                                       String productName,
+                                                                       @RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "15") int size){
+        PageResponseDTO<ProductResponseDTO> resultDTO = productService.findByName(productName, page, size);
+        ApiResponse<PageResponseDTO<ProductResponseDTO>> response = ApiResponse.<PageResponseDTO<ProductResponseDTO>>builder()
                 .code(1000)
                 .success(true)
                 .message("success")
@@ -86,4 +89,5 @@ public class ProductControler {
                 .build();
         return response;
     }
+//
 }

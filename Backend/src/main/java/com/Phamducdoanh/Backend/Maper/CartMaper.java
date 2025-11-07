@@ -28,7 +28,7 @@ public interface CartMaper {
 
                 .totalPrice(totalPrice)
 
-                .imageUrl("/product/images" + cartItemEntity.getProduct().getProductId())
+                .imageUrl("/product/images/" + cartItemEntity.getProduct().getProductId())
                 .build();
     }
     List<CartItemResponseDTO> toCartItemResponseDTOList(List<CartItemEntity> entityList);

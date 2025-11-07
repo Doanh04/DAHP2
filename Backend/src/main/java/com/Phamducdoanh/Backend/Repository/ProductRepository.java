@@ -1,6 +1,8 @@
 package com.Phamducdoanh.Backend.Repository;
 
 import com.Phamducdoanh.Backend.entity.ProductEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,8 +13,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     ProductEntity findByProductId(Long productId);
-    List<ProductEntity> findByProductNameContainingIgnoreCase(String productName);
-    List<ProductEntity> findByCategory_CategoryId(Long categoryId);
+    Page<ProductEntity> findByProductNameContainingIgnoreCase(String productName, Pageable pageable);
+    Page<ProductEntity> findByCategory_CategoryId(Long categoryId, Pageable pageable);
 
 // Hàm bắt lỗi không tìm thấy tên trong database
     boolean existsByProductName(String productName);

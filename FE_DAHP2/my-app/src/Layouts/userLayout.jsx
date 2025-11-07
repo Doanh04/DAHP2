@@ -1,7 +1,7 @@
 import { Button, Col, Dropdown, Input, Layout, Row, Select } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import "../style/UserScss/UserLayout.scss";
-import { Link, Outlet,useNavigate  } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
   DashboardOutlined,
   DownOutlined,
@@ -12,35 +12,65 @@ import {
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { GetAllCategory } from "../service/user/Category";
+import { decodeTokenAndCheckRole } from "../util/AuthUltil";
+import { GetCartItem } from "../service/Cart/Cart";
 
 function UserLayout() {
   const [category, setCategory] = useState([]);
   const [user, setUser] = useState(null);
+  const [searchItem, setSearchItem] = useState("");
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const name = localStorage.getItem("name");
-    const token = localStorage.getItem("token");
-    
-    if (name && token) {
-      // Decode JWT token để lấy scope (roles/permissions)
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const scope = payload.scope || "";
-        const isAdmin = scope.includes("ROLE_ADMIN") || scope.includes("ADMIN_ROLE");
-        
-        setUser({
-          name: name,
-          isAdmin: isAdmin,
-        });
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        setUser({ name: name, isAdmin: false });
-      }
+  const fetchCartItems = async () => {
+    try {
+      const data = await GetCartItem();
+      setCartItems(data);
+    } catch (error) {
+      console.error("Lỗi", error);
     }
-  }, []);
+  };
 
-    const handleLogout = () => {
+  useEffect(() => {
+    // const name = localStorage.getItem("name");
+    try {
+      const token = localStorage.getItem("token");
+      const decode = decodeTokenAndCheckRole(token);
+
+      if (decode) {
+        setUser({
+          name: decode.name,
+          isAdmin: decode.isAdmin,
+        });
+      }
+    } catch (error) {
+      setUser(null);
+    }
+    fetchCartItems();
+  }, []);
+  // Xử lý tìm kiếm
+  const handleSearch = () => {
+    const trimedvalue = searchItem.trim();
+    if (trimedvalue) {
+      setSearchItem("");
+      navigate(
+        `/products/filterProduct/?productName=${encodeURIComponent(
+          trimedvalue
+        )}`
+      );
+    } else {
+      navigate(`/`);
+    }
+  };
+  // Xử lý khi nhấn Enter trong ô tìm kiếm
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch(searchItem);
+    }
+  };
+  // Đăng xuất
+  const handleLogout = () => {
     localStorage.removeItem("name");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -52,7 +82,10 @@ function UserLayout() {
     {
       key: "profile",
       label: (
-        <Link to="/profile" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <Link
+          to="/profile"
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+        >
           <UserOutlined /> Thông tin tài khoản
         </Link>
       ),
@@ -62,7 +95,10 @@ function UserLayout() {
           {
             key: "admin",
             label: (
-              <Link to="/admin" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <Link
+                to="/admin"
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <DashboardOutlined /> Trang Admin
               </Link>
             ),
@@ -77,7 +113,12 @@ function UserLayout() {
       label: (
         <div
           onClick={handleLogout}
-          style={{ display: "flex", alignItems: "center", gap: "8px", color: "#d93a3a" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            color: "#d93a3a",
+          }}
         >
           <LogoutOutlined /> Đăng xuất
         </div>
@@ -87,17 +128,16 @@ function UserLayout() {
   ];
 
   useEffect(() => {
-    const fetchCategory = async()=>{
-      try{
-        const data= await GetAllCategory()
+    const fetchCategory = async () => {
+      try {
+        const data = await GetAllCategory();
         setCategory(data);
+      } catch (error) {
+        throw new Error();
       }
-      catch(error){
-        throw new Error;
-      }
-    }
+    };
     fetchCategory();
-  },[]);
+  }, []);
   return (
     <>
       <Layout>
@@ -129,32 +169,59 @@ function UserLayout() {
             <div className="Header__ultil">
               <div className="Header__ultil--left">
                 <div>
-                  <h1>ENDLINK</h1>
+                  <Link to={`/`}>
+                    <h1>ENDLINK</h1>
+                  </Link>
                   <div>
-                    <Select placeholder="Chọn danh mục" style={{ width: "250px" }}>
-                  {category.map((item) => (
-                    <Select.Option key={item.categoryId} value={item.categoryId}>
-                      {item.categoryName}
-                    </Select.Option>
-                  ))}
-                </Select>
+                    <Select
+                      placeholder="Chọn danh mục"
+                      style={{ width: "250px" }}
+                    >
+                      {category.map((item) => (
+                        <Select.Option
+                          key={item.categoryId}
+                          value={item.categoryId}
+                        >
+                          {item.categoryName}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
               </div>
               <div className="Header__ultil--center">
-                <Input placeholder="Tìm kiếm theo tên" />
+                <Input
+                  type="text"
+                  placeholder="Tìm kiếm theo tên"
+                  value={searchItem}
+                  onChange={(e) => setSearchItem(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
               </div>
               <div className="Header__ultil--right">
                 <div>
                   <Button>
-                    Giỏ hàng <ShoppingCartOutlined />
+                    <Link to={"/cart"}>
+                      Giỏ hàng <ShoppingCartOutlined />
+                      <p>{cartItems?.items?.length || 0}</p>
+                    </Link>
                   </Button>
                 </div>
                 <div>
                   {user ? (
                     // Hiển thị Dropdown khi đã đăng nhập
-                    <Dropdown menu={{ items: menuItems }} trigger={["click"]} placement="bottomRight">
-                      <Button style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Dropdown
+                      menu={{ items: menuItems }}
+                      trigger={["click"]}
+                      placement="bottomRight"
+                    >
+                      <Button
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
                         <UserOutlined />
                         {user.name}
                         <DownOutlined style={{ fontSize: "10px" }} />

@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { GiftOutlined } from "@ant-design/icons";
 
 // Hàm trợ giúp định dạng tiền tệ
-const formatCurrency = (price) => {
+export const formatCurrency = (price) => {
     return price?.toLocaleString('vi-VN') + 'đ';
 };
 
-// Component con ProductCard
 const ProductCard = ({ product }) => {
     const API_BASE_URL = "http://localhost:8080"; 
     return (

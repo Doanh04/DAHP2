@@ -58,4 +58,12 @@ public class UserEntity {
 //    Tạo mối quan hệ 1 n với Order
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         List<OrderEntity> orders;
+
+    // Các đơn hàng mà user này là người quản lý
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+    List<OrderEntity> managedOrders;
+
+    // Các đơn hàng mà user này là nhân viên bán hàng
+    @OneToMany(mappedBy = "salesperson", fetch = FetchType.LAZY)
+    List<OrderEntity> salesOrders;
 }

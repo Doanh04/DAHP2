@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Cart from "../../components/UI/Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { GetCartItem } from "../../service/Cart/Cart";
+import { GetCartItem, UpdateItemFromCart } from "../../service/Cart/Cart";
 import "../../style/Cart/Cart.scss"
 
 function CartManager() {
@@ -37,9 +37,15 @@ function CartManager() {
     fetchCartItems();
   }, [navigate]);
 
+  const updateCartItem =async (cartItemId, newQuantity) => {
+    const data = UpdateItemFromCart(cartItemId, newQuantity);
+    return data;
+  }
+
   const formProps = {
     cartItems,
-    loading
+    loading,
+    updateCartItem
   };
   return (
     <>

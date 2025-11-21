@@ -108,6 +108,19 @@ public class CartService {
         }
         return getCartDetails();
     }
+    @Transactional
+    public CartResponseDTO updateItem(Long cartItemId, Long newQuantity){
+        if (newQuantity == null || newQuantity <= 0) {
+            throw new AppExeption(ErrorCode.INVALID_QUANTITY);
+        }
+        CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new AppExeption(ErrorCode.CART_ITEM_NOTFOUND));
+
+        cartItem.setQuantity(newQuantity);
+        cartItemRepository.save(cartItem);
+
+        return getCartDetails();
+    }
     //Chi tiết giỏ hàng
     public CartResponseDTO getCartDetails(){
         CartEntity cart = getOrCreateCart();

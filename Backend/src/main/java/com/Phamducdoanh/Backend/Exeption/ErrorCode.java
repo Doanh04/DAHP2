@@ -19,7 +19,11 @@ public enum ErrorCode {
     NOT_FIND_ROLE(1008,"Không tìm thấy role", "error" , HttpStatus.FORBIDDEN),
     INVALID_QUANTITY(1009, "Số lượng không hợp lệ", "error",HttpStatus.BAD_REQUEST),
     CART_ITEM_NOTFOUND(1010, "Không tìm thấy sản phẩm trong giỏ hàng", "error", HttpStatus.NOT_FOUND),
-    ACCESS_DENIED(1011, "Truy cập bị từ chối", "error", HttpStatus.BAD_REQUEST)
+    ACCESS_DENIED(1011, "Truy cập bị từ chối", "error", HttpStatus.BAD_REQUEST),
+    PRODUCT_NOT_FOUND_IN_CART(1011, "Sản phẩm không có trong giỏ hàng", "error", HttpStatus.NOT_FOUND),
+    CART_NOT_FOUND(1012,"Không tìm thấy giỏ hàng", "error" , HttpStatus.NOT_FOUND),
+    ORDER_NOTFOUND(1013,"Không tìm thấy đơn hàng", "error" , HttpStatus.NOT_FOUND),
+    ORDER_ALREADY_PAID(1014, "Đơn hàng đang chờ thanh toán", "error" , HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;

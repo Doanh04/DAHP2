@@ -39,6 +39,7 @@ public class SercurityConfig {
             ,"/dashboard/product/filterproduct", "/dashboard/product/{productId}", "/dashboard/product/filterProduct"};
     final String[] PUBLIC_ENDPOINTS_IMAGE = {"/product/images/{productId}"};
     final String[] PUBLIC_ENDPOINTS_CATEGORY = {"/dasboard/category/getcategory", "/dasboard/category/top-products"};
+    final String[] PUBLIC_ENPOINTS_VNP ={"/api/payment/vnpay-return"};
     @Value("${jwt.siginer-key}")
     String siginerKey;
 
@@ -53,6 +54,7 @@ public class SercurityConfig {
                         .requestMatchers(HttpMethod.GET, PUBLIC_ENPOINTS_PRODUCTS).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_IMAGE).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_CATEGORY).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENPOINTS_VNP).permitAll()
                         .anyRequest().authenticated());//local enpoin;
 
         // nhận token lấy quyền theo role

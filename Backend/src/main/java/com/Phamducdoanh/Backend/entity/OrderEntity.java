@@ -24,7 +24,7 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long orderId;
     @Column(name = "orderDate")
-    Date  orderDate;
+        Date  orderDate;
     @Column(name = "status")
     String status;
     @Column(name="totalAmout", precision = 18, scale = 2)
@@ -45,4 +45,16 @@ public class OrderEntity {
 //    MQH 1 1 tới bảng payment
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     PaymentEntity payment;
+
+
+    // Người quản lý đơn hàng
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
+    UserEntity manager;
+
+    // Nhân viên bán hàng được gán
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "salesperson_id")
+    UserEntity salesperson;
+
 }

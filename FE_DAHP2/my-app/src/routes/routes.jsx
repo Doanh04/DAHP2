@@ -20,6 +20,7 @@ import ProductByCategoryManager from "../pages/user/ProductByCategory";
 import ProductSearchItem from "../components/UI/userComponents/ProductSearchItem";
 import ProductSearchItemManager from "../pages/user/ProductSearch";
 import CartManager from "../pages/Cart/Cart";
+import CheckOutManager from "../pages/Order/CheckOut";
 
 export const Routers = [
   // Link điều hướng admin
@@ -79,20 +80,24 @@ export const Routers = [
       },
       {
         path: "products/category/:categoryId",
-        element: <ProductByCategoryManager/>,
+        element: <ProductByCategoryManager />,
       },
       {
-        path:"products/:productId",
-        element:<ProductDetailManager/>
+        path: "products/:productId",
+        element: <ProductDetailManager />,
       },
       {
         path: "products/filterProduct",
-        element: <ProductSearchItemManager/>,
+        element: <ProductSearchItemManager />,
       },
       {
         path: "cart",
-        element: <CartManager/>
-      }
+        element: <CartManager />,
+      },
+      {
+        path: "checkout",
+        element: <CheckOutManager />,
+      },
     ],
   },
 ];

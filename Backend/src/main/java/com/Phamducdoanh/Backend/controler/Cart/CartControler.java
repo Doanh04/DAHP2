@@ -49,7 +49,7 @@ public class CartControler {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/deleleCartItem")
+    @DeleteMapping("/deleleCartItem/{cartItemId}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<ApiResponse<CartResponseDTO>> removeItem(
             @PathVariable Long cartItemId) {
@@ -60,6 +60,22 @@ public class CartControler {
         ApiResponse<CartResponseDTO> response = ApiResponse.<CartResponseDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Sản phẩm đã được xóa")
+                .result(cartDetails)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("update/{cartItemId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public   ResponseEntity<ApiResponse<CartResponseDTO>> updateItem(
+            @RequestParam Long quantity,
+            @PathVariable Long cartItemId
+    ){
+        CartResponseDTO cartDetails = cartService.updateItem(cartItemId, quantity);
+
+        ApiResponse<CartResponseDTO> response = ApiResponse.<CartResponseDTO>builder()
+                .code(HttpStatus.OK.value())
+                .message("Số lượng đã được thay đổi")
                 .result(cartDetails)
                 .build();
 

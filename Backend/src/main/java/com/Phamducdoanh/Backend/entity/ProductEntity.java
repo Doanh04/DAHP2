@@ -27,13 +27,13 @@ public class ProductEntity {
     String brand;
     @Column(name = "quantity", nullable = false)
     Long quantity;
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "TEXT")
     String description;
-    @Column(name="price", columnDefinition = "LONGBLOB")
+    @Column(name="price")
     Integer price;
 //    Convert sạng byte để lưu ảnh vào DB
     @Lob
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")
     byte[] image;
     @CreationTimestamp
     @Column(name = "createdAt", nullable = false, updatable = false)
